@@ -2,15 +2,15 @@
   (:require [babashka.fs :as fs]
             [clojure.string :as s]
             [clojure.java.io :as io]
-            [single.lines :as l]
+            [single.lines :as line]
             [single.linewrap :as wrap]
             [single.header :as header]
             [gophermap.lines :as gmap]
             [gophermap.links :as glinks]))
   
 (defn gemtext-linetype [gemtext-line]
-  (loop [types    (keys l/gemini-linetypes)
-         matchers (vals l/gemini-linetypes)]
+  (loop [types    (keys line/gemini-linetypes)
+         matchers (vals line/gemini-linetypes)]
     (if (empty? matchers) :normal-line
         (let [matcher (first matchers)
               type    (first types)]
@@ -25,14 +25,14 @@
 
 (defn convert-line [type line file]
   (case type
-    :h1             (l/convert-headings line :h1)
-    :h2             (l/convert-headings line :h2)
-    :h3             (l/convert-headings line :h3)
-    :link           (l/convert-link line file)
-    :quote          (l/convert-quote line)
-    :list           (l/convert-list line)
+    :h1             (line/convert-headings line :h1)
+    :h2             (line/convert-headings line :h2)
+    :h3             (line/convert-headings line :h3)
+    :link           (line/convert-link line file)
+    :quote          (line/convert-quote line)
+    :list           (line/convert-list line)
     :pre            line
-    :my-pre-marked  (l/handle-pre line)
+    :my-pre-marked  (line/handle-pre line)
     :normal-line    (wrap/wrap-line line)))
 
 (defn convert-index-line [type line file]
@@ -50,7 +50,7 @@
 
 (defn convert-file [gemtext-file output-file header?]
   (let [lines   (fs/read-all-lines gemtext-file)
-        marked  (type-map (l/mark-preformatted-lines lines))]
+        marked  (type-map (line/mark-preformatted-lines lines))]
     (io/make-parents output-file)
     (spit output-file
           (str
@@ -63,13 +63,14 @@
                         (second marked)))))))
 
 
-
 (defn convert-index-file [index-file output-file]
   (let [lines   (fs/read-all-lines index-file)
-        marked  (type-map (l/mark-preformatted-lines lines))]
+        marked  (type-map (line/mark-preformatted-lines lines))]
     (io/make-parents output-file)
     (spit output-file
           (s/join "\n"
                   (map #(convert-index-line %1 %2 index-file)
                        (first marked)
                        (second marked))))))
+
+

@@ -29,17 +29,17 @@
 ;;          (if label (s/join label) uri)
 ;;          "\t" uri "\t" domain "\t" "70")))
 
+;; (defn make-gm-relative-link [link label]
+;;   (let [protocol "gopher://"
+;;         domain @env/domain
+;;         matcher (str protocol domain "/")]
+;;     (str "0" label "\t" (s/replace link matcher "") "\t" domain "\t" 70)))
+
 (defn make-gm-relative-link [link label]
-  (let [protocol "gopher://"
-        domain @env/domain
-        matcher (str protocol domain "/")]
-    (str "0"
-         label
-         "\t"
-         (s/replace link matcher ""))))
+  (let [link (s/replace link #".gmi" "")]
+    (str "0" label "\t" link "\t" @env/domain "\t" 70)))
+         
 
-
-        
 
 ;; TODO
 
@@ -49,13 +49,15 @@
 ;;     (if (internal-link? uri)
 ;;       (make-relative-link uri label parents)
 ;;       (gmap/gm-link-format uri label))))
+;;
+
 
 
 ;;  TODO use the rellinks function to return link and then just restructure it...
 (defn gmap-link [line file]
   (let [[_ uri & label] (s/split line #" ")]
     (if (l/internal-link? uri)
-      (make-gm-relative-link (rel/convert-relative-links uri file) (s/join " " label))
+      (make-gm-relative-link uri (s/join " " label))
       (gmap/gm-link-format uri label))))
 
 (make-gm-relative-link

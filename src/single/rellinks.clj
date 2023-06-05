@@ -28,14 +28,26 @@
       (seq (find :gemtext)) (s/replace uri #".gmi" "")
       :else uri)))
 
+;; (defn convert-relative-links [uri file]
+;;   (let [parents-uri (parent-directories uri)
+;;         parents-file (parent-directories file)
+;;         domain (str @env/domain "/")]
+;;     (if (some #{".."} parents-uri)
+;;       (str "gopher://" domain "0/"
+;;            (gemlog->phlog (translate-file-extension
+;;                            (missing-parents parents-uri parents-file))))
+;;       (str "gopher://" domain "0/"
+;;            (gemlog->phlog (translate-file-extension
+;;                            (s/join "/" (concat (butlast parents-file) parents-uri))))))))
+
 (defn convert-relative-links [uri file]
   (let [parents-uri (parent-directories uri)
         parents-file (parent-directories file)
         domain (str @env/domain "/")]
     (if (some #{".."} parents-uri)
       (str "gopher://" domain "0/"
-           (gemlog->phlog (translate-file-extension
-                           (missing-parents parents-uri parents-file))))
+           (translate-file-extension
+            (missing-parents parents-uri parents-file)))
       (str "gopher://" domain "0/"
-           (gemlog->phlog (translate-file-extension
-                           (s/join "/" (concat (butlast parents-file) parents-uri))))))))
+           (translate-file-extension
+             (s/join "/" (concat (butlast parents-file) parents-uri)))))))

@@ -6,6 +6,7 @@
 (defn get-all-files [gemlog-dir]
   (map str (fs/glob gemlog-dir "**")))
 
+
 ;; (defn non-gmi-files [all-files]
 ;;   (let [non-gmi-files (remove #(re-find #".gmi" %) all-files)]
 ;;     (into [] non-gmi-files)))
@@ -13,8 +14,6 @@
 (defn non-gmi-files [all-files]
   (into [] (remove #(re-find #".gmi" %) all-files)))
 
-(defn gmi-files [all-files]
-  (filter #(re-find #".gmi" %) all-files))
 
 ;; (defn index-files [gmi-files additional-index-files]
 ;;   (let [index-files (filter #(re-find #"/index.gmi$" %) gmi-files)]
@@ -22,6 +21,21 @@
 ;;         (first
 ;;          (map #(conj index-files %)
 ;;               additional-index-files)))))
+;;
+
+
+(defn index-gophermap [all-files]
+  (let [matcher (re-pattern (str @env/gemlog-directory "/index.gmi"))
+        gophermap (filter #(re-find matcher %) all-files)]
+    (if (> (count gophermap) 1) (println "More than one index.gmi found in root, skipping gophermap creation...")
+        gophermap)))
+
+
+(defn gmi-files [all-files gophermap]
+  (remove #{gophermap}
+          (filter #(re-find #".gmi" %) all-files)))
+
+
 
 ;; (defn filter-index-files
 ;;   [gmi-files index-files]
@@ -30,15 +44,15 @@
 ;;    (apply merge-with - (map frequencies [gmi-files index-files]))))
 
 (defn construct-parent-dirs
-  "changing 'gemlog' folder to 'phlog' folder in destination directory."
+  "also changes 'gemlog' folder to 'phlog' folder in destination directory."
   [parent gemlog-directory]
   (let [parent-dir (.toString parent)]
-    (s/replace
-     (s/replace parent-dir gemlog-directory "")
-     "gemlog" "phlog")))
+    ;; (s/replace
+    (s/replace parent-dir gemlog-directory "")))
+     ;; "gemlog" "phlog"))
 
 ;; TODO Altenatively, .txt extension not needed?
-;; TODO This fails if there is a trailing slash in gemlog-directory name...
+;; TODO This fails if there is a trailing slash in gemlog-directory name provided...
 (defn convert-path
   [gmi-file gemlog-directory destination-directory]
   (str destination-directory
@@ -49,18 +63,27 @@
 
 
 ;; TODO Have user option to set gophermap file format (just 'gophermap' or extension '.gophermap', this will depend on how servers read this
-(defn convert-index-path
-  [index-file gemlog-directory destination-directory]
-  (str destination-directory
-       (construct-parent-dirs (fs/parent index-file) gemlog-directory)
-       "/"
-       (fs/strip-ext (fs/file-name index-file))
-       ".gophermap"))
+;; (defn convert-index-path
+;;   [index-file gemlog-directory destination-directory]
+;;   (str destination-directory
+;;        (construct-parent-dirs (fs/parent index-file) gemlog-directory)
+;;        "/"
+;;        (fs/strip-ext (fs/file-name index-file))
+;;        ".gophermap"))
+
+
 
 (defn gemtxt-files-to-convert [orig-files gemlog-directory destination-directory]
   (let [convert-to (map #(convert-path % gemlog-directory destination-directory)
                         orig-files)]
     (into [] (partition-all 2 (interleave orig-files convert-to)))))
+
+(defn index-to-convert [gophermap-file gemlog-directory destination-directory]
+  (let [convert-to (s/replace (convert-path gophermap-file gemlog-directory destination-directory)
+                              #"index"
+                              "gophermap")]
+                              
+    [gophermap-file convert-to]))
 
 ;; (defn index-files-to-convert [orig-files gemlog-directory destination-directory]
 ;;   (let [convert-to (map #(convert-index-path % gemlog-directory destination-directory)
@@ -89,19 +112,16 @@
 ;;                               :regular (non-gmi-files all-files)})))
 
 
-(defn map-files [gemlog-directory destintation-directory]
+(defn map-files [gemlog-directory destination-directory]
   (let [all-files (get-all-files gemlog-directory)
-        gmi-files (gmi-files all-files)]
+        gophermap (first (index-gophermap all-files))
+        gmi-files (gmi-files all-files gophermap)]
     (reset! env/map-of-files {:gemtext (gemtxt-files-to-convert
                                         gmi-files
                                         gemlog-directory
-                                        destintation-directory)
+                                        destination-directory)
+                              :gophermap (index-to-convert
+                                          gophermap
+                                          gemlog-directory
+                                          destination-directory)
                               :regular (non-gmi-files all-files)})))
-
-
-
-
-
-
-
-
