@@ -31,7 +31,6 @@
 (defn gm-link-format [uri label]
   (->>  (s/split-lines (str (s/join " " label)
                             ":" "\n" uri))
-        ;; (map #(str "i" %))
         (map #(str %))
         (s/join "\n")
         (str "\n")))

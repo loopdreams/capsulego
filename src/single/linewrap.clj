@@ -6,9 +6,9 @@
 (defn index-of-spaces [line]
   (let [m (re-matcher #" " line)]
     ((fn step []
-      (when (. m find)
-        (cons (. m start)
-          (lazy-seq (step))))))))
+       (when (. m find)
+         (cons (. m start)
+                (lazy-seq (step))))))))
 
 (defn split-lines-at-limit [line]
   (if (> (count line) line-length)

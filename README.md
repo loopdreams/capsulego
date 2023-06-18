@@ -30,7 +30,7 @@ Gemini linetypes:
 A regular line.
 ```
 
-Gopher `.txt` equivalents:
+Gopher  equivalents:
 
 ``` text
 Heading1

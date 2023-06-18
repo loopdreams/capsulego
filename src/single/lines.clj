@@ -33,14 +33,6 @@
         (str title "\n"
          (s/join (repeat length (if (= level :h1) "=" "-")))))))
 
-;; (defn convert-link [line]
-;;   (let [parts (s/split line #" ")
-;;         uri (second parts)
-;;         label (drop 2 parts)]
-;;     (str "~ " (s/join " " label) ":"
-;;          "\n"
-;;          uri)))
-
 
 (defn internal-link?
   "Regex copied from online, there has to be a better way to do this..."
