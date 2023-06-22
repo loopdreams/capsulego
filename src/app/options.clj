@@ -1,5 +1,6 @@
 (ns app.options
-  (:require [clojure.edn :as edn]))
+  (:require [clojure.edn :as edn]
+            [babashka.fs :as fs]))
 
 
 (defn validate-opts [opts]
@@ -13,20 +14,11 @@
       (not (boolean? (:overwrite opts)))        (error-msg :overwrite)
       :else                                     opts)))
 
-
-(def options (->> (slurp "config.edn")
-                  edn/read-string
-                  validate-opts))
-
-
-
-
-
-
-
-
-
-
-
-
-
+(def options
+  (if (fs/exists? "config.edn") (->> (slurp "config.edn")
+                                     edn/read-string
+                                     validate-opts)
+      {:line-length               70
+       :headers                   false
+       :file-extension-preference ""
+       :overwrite                 false}))

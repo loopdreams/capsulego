@@ -20,6 +20,6 @@
 ;;      Whether to overwrite output directory if already exists
 
 {:line-length               70
- :headers                   false
+ :headers                   true
  :file-extension-preference ""
  :overwrite                 true}

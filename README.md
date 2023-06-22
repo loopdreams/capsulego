@@ -1,18 +1,69 @@
 # Capsulego
 
-Some clojure/babashka scripts for converting a gemlog into a gopherhole.
+A clojure/babashka script for converting a gemlog into a gopherhole.
+
+Requires - [babashka](https://github.com/babashka/babashka)
+
+``` shell
+$ bash < <(curl -s https://raw.githubusercontent.com/babashka/babashka/master/install)
+```
 
 Usage:
 
-`capsulego capsule gemini-capsule-directory -d domain-name -o gopher-directory -i index-files`
+Copy the the main script `capsulego.clj` somewhere on your `PATH` and make executable. Optionally, copy the `config.edn` file to the same directory, if you want to change the configs (or you can also change them directly in the script)
 
-`capsulego single gemtext-file`
+There are two ways you can use the script:
 
-`capsulego index index-file`
+1. Converting a single file - `file`
+2. Converting an entire capsule - `capsule`
+
+In the case of converting a single file, the options are:
+
+- `-f` file you wish to convert (required)
+- `-o` filename for output  (defaults to `filename_gopher.txt`)
+- `-d` domain name (defaults to `localhost`)
+
+``` shell
+capsulego.clj file -f "myfile.gmi" -o "myfile.txt" -d "example.com"
+```
 
 
-- 'index' files are files that will be converted to gophermaps. Files named `index.gmi` are automatically converted to gophermaps.
+In the case of converting a capsule, the options are similar:
+- `-c` directory (capsule) you wish to convert
+- `-o` name of output directory (defaults to `capsulename_gopher`)
+- `-d` domain name (defaults to `localhost`)
 
+``` shell
+capsulego.clj capsule -c "/path/to/gemine/capsule" -o "/var/gopher" -d "example.com"
+```
+
+## Options
+
+Some options can be set in the `config.edn` file, providing it is in the same directory as the script. Available options are:
+
+
+- Line length - number
+  - The point to wrap lines at, e.g., 67
+
+- Headers - true/false
+  - Whether to include an auto-generated header in gopher text files
+  - Header format is:
+
+``` text
+
+     ======================================================
+     Title: <Post Title>
+     Date: <Post Date>
+     Word Count: <word count of post>
+     ======================================================
+
+```
+
+- File-extension-preference - ""/".txt"
+  - Whether to output text files with no extensions (example) or with explicit .txt extension (example.txt)
+
+- Overwrite - true/false
+  - Whether to overwrite output directory if already exists
 
 ## Formatting
 

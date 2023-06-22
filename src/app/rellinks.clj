@@ -30,5 +30,3 @@
       (str "gopher://" domain "0/"
            (translate-file-extension
             (str/join "/" (concat (butlast parents-file) parents-uri)))))))
-
-

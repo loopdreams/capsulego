@@ -7,7 +7,6 @@
             [app.header :refer [make-header]]
             [app.rellinks :refer [convert-relative-links]]))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Linetypes
 
@@ -119,7 +118,6 @@
                                          domain)
                           types
                           lines))))))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Categorize and map files

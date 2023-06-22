@@ -11,7 +11,7 @@
 
 (defn title [file]
   (let [line1 (first (fs/read-all-lines file))]
-    (str/replace line1 #"^#+?\s" "")))
+    (when line1 (str/replace line1 #"^#+?\s" ""))))
 
 (defn date [file]
   (let [filename-date (re-find #"\d{4}-\d{2}-\d{2}" file)]
