@@ -1,6 +1,6 @@
 (ns app.linewrap
-  (:require [clojure.edn :as edn]
-            [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [app.config :refer [config]]))
 
 
 (defn index-of-spaces [line]
@@ -11,7 +11,7 @@
                (lazy-seq (step))))))))
 
 (defn split-lines-at-limit [line]
-  (let [line-length (:line-length (edn/read-string (slurp "config.edn")))]
+  (let [line-length (:line-length config)]
     (if (> (count line) line-length)
       (let [split-point (->> line
                              (index-of-spaces)

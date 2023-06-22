@@ -32,8 +32,3 @@
             (str/join "/" (concat (butlast parents-file) parents-uri)))))))
 
 
-(comment (convert-relative-links "../../../index.gmi"
-                                 "test-gemlog/gemlog/another/test.gmi"
-                                 "/home/eoin/code/clojure/capsulego/test-gemlog"
-                                 "localhost"))
-

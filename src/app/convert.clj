@@ -130,7 +130,7 @@
   (str/replace (str (fs/parent file)) capsule-dir ""))
 
 (defn convert-path
-  "returns new path for file, which will be writted to after conversion."
+  "returns new path for file, which will be written to after conversion."
   [file capsule-directory destination-directory]
   (let [ext (:file-extension-preference options)]
     (str
@@ -172,11 +172,3 @@
     (dorun (map #(copy-reg-files %1 %2) regular-files regular-to))))
 
 
-(comment
-  (convert-line :link "=> ../index.gmi"
-                "capsule/gemlog/file.gmi"
-                "capsule"
-                "example.com")
-  (convert-line :h1 "# Heading" nil nil nil)
-  (convert-line :quote "> I am a quote" nil nil nil)
-  (convert-file "test-gemlog/about.gmi" "test-gemlog/about" "test-gemlog" "localhost"))
