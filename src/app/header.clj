@@ -1,7 +1,7 @@
 (ns app.header
   (:require [babashka.fs :as fs]
             [clojure.string :as str]
-            [single.linewrap :refer [line-length]]))
+            [app.options :refer [options]]))
 
 (defn word-count [file]
   (let [split (str/split (slurp file) #"\W+")]
@@ -20,7 +20,7 @@
           (subs ctime 0 10)))))
 
 (defn make-header [file]
-  (let [border (str/join (repeat line-length "="))]
+  (let [border (str/join (repeat (:line-length options) "="))]
     (str
      border "\n"
      (str "Title:      " (title file))      "\n"
