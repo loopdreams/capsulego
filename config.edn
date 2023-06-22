@@ -1,0 +1,25 @@
+;; Options:
+;;
+;; Line length - number
+;;      The point to wrap lines at, e.g., 67
+;;
+;; headers - true/false
+;;      whether to include an auto-generated header in gopher text files
+;;      Header format is:
+;;
+;;      ======================================================
+;;      Title: <Post Title>
+;;      Date: <Post Date>
+;;      Word Count: <word count of post>
+;;      ======================================================
+;;
+;; File-extension-preference - ""/".txt"
+;;      Whether to output text files with no extensions (example) or with explicit .txt extension (example.txt)
+;;
+;; Overwrite - true/false
+;;      Whether to overwrite output directory if already exists
+
+{:line-length               70
+ :headers                   false
+ :file-extension-preference ""
+ :overwrite                 true}
