@@ -1,6 +1,6 @@
 (ns app.linewrap
   (:require [clojure.string :as str]
-            [app.config :refer [config]]))
+            [app.options :refer [options]]))
 
 
 (defn index-of-spaces [line]
@@ -11,7 +11,7 @@
                (lazy-seq (step))))))))
 
 (defn split-lines-at-limit [line]
-  (let [line-length (:line-length config)]
+  (let [line-length (:line-length options)]
     (if (> (count line) line-length)
       (let [split-point (->> line
                              (index-of-spaces)
