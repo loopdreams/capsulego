@@ -2,7 +2,6 @@
   (:require [clojure.edn :as edn]
             [babashka.fs :as fs]))
 
-
 (defn validate-opts [opts]
   (let [error-msg (fn [opt] (println "Error in config file at option " opt ". Please edit 'config.edn'")
                             (System/exit 1))]

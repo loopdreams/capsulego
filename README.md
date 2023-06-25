@@ -8,9 +8,9 @@ Requires - [babashka](https://github.com/babashka/babashka)
 $ bash < <(curl -s https://raw.githubusercontent.com/babashka/babashka/master/install)
 ```
 
-Usage:
+## Usage
 
-Copy the the main script `capsulego.clj` somewhere on your `PATH` and make executable. Optionally, copy the `config.edn` file to the same directory, if you want to change the configs (or you can also change them directly in the script)
+Copy the main script `capsulego.clj` somewhere on your `PATH` and make executable. Optionally, copy the `config.edn` file to the same directory, if you want to change the configs (or you can also change them directly in the script)
 
 There are two ways you can use the script:
 
@@ -41,7 +41,6 @@ capsulego.clj capsule -c "/path/to/gemine/capsule" -o "/var/gopher" -d "example.
 
 Some options can be set in the `config.edn` file, providing it is in the same directory as the script. Available options are:
 
-
 - Line length - number
   - The point to wrap lines at, e.g., 67
 
@@ -51,11 +50,11 @@ Some options can be set in the `config.edn` file, providing it is in the same di
 
 ``` text
 
-     ======================================================
-     Title: <Post Title>
-     Date: <Post Date>
-     Word Count: <word count of post>
-     ======================================================
+======================================================
+Title: <Post Title>
+Date: <Post Date>
+Word Count: <word count of post>
+======================================================
 
 ```
 
@@ -66,6 +65,8 @@ Some options can be set in the `config.edn` file, providing it is in the same di
   - Whether to overwrite output directory if already exists
 
 ## Formatting
+
+I've adopted the formatting choices for the plaintext from [Ruarí Ødegaard's gemtext to gopher bash script](https://ruario.flounder.online/gemlog/2022-01-04_Formatting_Gemtext_for_Gopher.gmi) 
 
 Gemini linetypes:
 
@@ -98,7 +99,7 @@ Heading 2
 ```preformatted (nowrap)
 
 ~ Link label:
-gopher://example.org
+  gopher://example.org
 
 * List ...
   With wrapped text indented
@@ -106,4 +107,3 @@ gopher://example.org
 A regular line (will get wrapped at 68 characters)
 ```
 
-I've adopted the formatting choices for the plaintext from [Ruarí Ødegaard's gemtext to gopher bash script](https://ruario.flounder.online/gemlog/2022-01-04_Formatting_Gemtext_for_Gopher.gmi) 
