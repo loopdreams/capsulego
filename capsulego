@@ -1,5 +1,4 @@
 #!/usr/bin/env bb
-
 (ns app.options
   (:require [clojure.edn :as edn]
             [babashka.fs :as fs]))
@@ -55,8 +54,6 @@
       (str "gopher://" domain "0/"
            (translate-file-extension
             (str/join "/" (concat (butlast parents-file) parents-uri)))))))
-
-
 (ns app.header
   (:require [babashka.fs :as fs]
             [clojure.string :as str]
@@ -121,7 +118,6 @@
             [app.options :refer [options]]
             [app.header :refer [make-header]]
             [app.rellinks :refer [convert-relative-links]]))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Linetypes
@@ -194,16 +190,20 @@
   [line]
   (not (re-find #"^(gemini|https|http|gopher|ftp|git):\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$" line)))
 
+(defn format-link [uri & label]
+  (if label (str "~ "
+                 (str/join " " label) ":"
+                 "\n  "
+                 uri)
+      (str "~ " uri)))
+    
 (defn convert-link [line file gemlog-dir domain]
-  (let [[_ uri & label] (str/split line #" ")
-        make-link       (fn [uri label]
-                          (str "~ " (str/join " " label) ":"
-                               "\n"
-                               uri))]
+  (let [[_ uri & label] (str/split line #" ")]
     (if (internal-link? uri)
       (let [converted-uri (convert-relative-links uri file gemlog-dir domain)]
-        (make-link converted-uri label))
-      (make-link uri label))))
+        (format-link converted-uri label))
+      (format-link uri label))))
+
 
 (defn convert-line
   "The 'file' 'gemlog-dir' 'domain' are only needed here for cases of relative links"
@@ -234,7 +234,6 @@
                                          domain)
                           types
                           lines))))))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Categorize and map files
@@ -278,7 +277,6 @@
 (defn copy-reg-files [file destination]
   (io/make-parents destination)
   (fs/copy file destination))
-
 
 (defn capsule->gopherhole [capsule-dir output-dir domain]
   (let [{:keys [regular-files regular-to gemtext gemtext-to]}

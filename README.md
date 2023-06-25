@@ -10,7 +10,7 @@ $ bash < <(curl -s https://raw.githubusercontent.com/babashka/babashka/master/in
 
 ## Usage
 
-Copy the main script `capsulego.clj` somewhere on your `PATH` and make executable. Optionally, copy the `config.edn` file to the same directory, if you want to change the configs (or you can also change them directly in the script)
+Copy the main script `capsulego` somewhere on your `PATH` and make executable. Optionally, copy the `config.edn` file to the same directory, if you want to change the configs (or you can also change them directly in the script)
 
 There are two ways you can use the script:
 
@@ -24,7 +24,7 @@ In the case of converting a single file, the options are:
 - `-d` domain name (defaults to `localhost`)
 
 ``` shell
-capsulego.clj file -f "myfile.gmi" -o "myfile.txt" -d "example.com"
+capsulego file -f "myfile.gmi" -o "myfile.txt" -d "example.com"
 ```
 
 
@@ -34,7 +34,7 @@ In the case of converting a capsule, the options are similar:
 - `-d` domain name (defaults to `localhost`)
 
 ``` shell
-capsulego.clj capsule -c "/path/to/gemine/capsule" -o "/var/gopher" -d "example.com"
+capsulego capsule -c "/path/to/gemine/capsule" -o "/var/gopher" -d "example.com"
 ```
 
 ## Options
@@ -58,8 +58,9 @@ Word Count: <word count of post>
 
 ```
 
-- File-extension-preference - ""/".txt"
+- File-extension-preference - `""` or `".txt"` 
   - Whether to output text files with no extensions (example) or with explicit .txt extension (example.txt)
+
 
 - Overwrite - true/false
   - Whether to overwrite output directory if already exists

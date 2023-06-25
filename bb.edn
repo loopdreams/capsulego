@@ -1,1 +1,9 @@
-{:paths ["src"]}
+{:paths ["src"]
+ :tasks {:requires ([babashka.fs :as fs])
+         clean (do
+                 (println "Removing old version.")
+                 (fs/delete-if-exists "capsulego"))
+         make (do (run 'clean)
+                  (println "Making uberscript")
+                  (shell "bb uberscript capsulego main.clj")
+                  (shell "sed -i '1 i #!/usr/bin/env bb' capsulego"))}}

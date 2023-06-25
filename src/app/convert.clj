@@ -166,7 +166,6 @@
   (io/make-parents destination)
   (fs/copy file destination))
 
-
 (defn capsule->gopherhole [capsule-dir output-dir domain]
   (let [{:keys [regular-files regular-to gemtext gemtext-to]}
         (prepare-files capsule-dir output-dir)]
