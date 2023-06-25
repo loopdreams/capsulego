@@ -85,20 +85,13 @@
                  uri)
       (str "~ " uri)))
     
-
 (defn convert-link [line file gemlog-dir domain]
-  (let [[_ uri & label] (str/split line #" ")
-        make-link       (fn [uri label]
-                          (if label (str "~ " (str/join " " label) ":"
-                                         "\n  "
-                                         uri)
-                              (str "~ " uri)))]
+  (let [[_ uri & label] (str/split line #" ")]
     (if (internal-link? uri)
       (let [converted-uri (convert-relative-links uri file gemlog-dir domain)]
-        (make-link converted-uri label))
-      (make-link uri label))))
+        (format-link converted-uri label))
+      (format-link uri label))))
 
-(format-link "http://example.com")
 
 (defn convert-line
   "The 'file' 'gemlog-dir' 'domain' are only needed here for cases of relative links"
